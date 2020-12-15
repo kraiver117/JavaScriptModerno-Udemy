@@ -16,6 +16,8 @@
  //References of DOM
  const btnAskForCard = document.querySelector('#btnAskForCard');
  const btnStop = document.querySelector('#btnStop');
+ const btnNewGame = document.querySelector('#btnNewGame');
+ 
  const scorePoints = document.querySelectorAll('small');
  const playerCards =  document.querySelector('#player-cards');
  const AICards =  document.querySelector('#AI-cards');
@@ -87,6 +89,17 @@
 
     } while ( (AIPoints < minimumPoints) && (minimumPoints <= 21) );
 
+    setTimeout(() => {
+        if( AIPoints === minimumPoints) {
+            alert('Draw');
+        } else if( minimumPoints > 21) {
+            alert('AI Wins');
+        } else if( AIPoints > 21 ){ 
+            alert('Player Wins');
+        } else {
+            alert('AI Wins');
+        }
+    }, 100);
  }
 
 //Events
@@ -101,13 +114,13 @@ btnAskForCard.addEventListener('click', () => {
     playerCards.append(imgCard);
 
      if(playerPoints > 21) {
-        alert('Perdiste');
+        // alert('Perdiste');
         btnStop.disabled = true;
         btnAskForCard.disabled = true;
         computerTurn(playerPoints);
 
      } else if ( playerPoints === 21) {
-        alert('Ganaste');
+        // alert('Ganaste');
         btnStop.disabled = true;
         btnAskForCard.disabled = true;
         computerTurn( playerPoints );
@@ -120,4 +133,24 @@ btnStop.addEventListener('click', () => {
     btnStop.disabled = true;
     btnAskForCard.disabled = true;
     computerTurn( playerPoints );
+});
+
+
+btnNewGame.addEventListener('click', () => {
+
+    console.clear();
+    deck = [];
+    deck = createDeck();
+
+    playerPoints = 0;
+    AIPoints = 0;
+    scorePoints[0].innerText = 0;
+    scorePoints[1].innerText = 0;
+
+    playerCards.innerHTML = '';
+    AICards.innerHTML = '';
+
+    btnStop.disabled = false;
+    btnAskForCard.disabled = false;
+
 });
