@@ -16,6 +16,7 @@
  //References of DOM
  const btnAskForCard = document.querySelector('#btnAskForCard');
  const scorePoints = document.querySelectorAll('small');
+ const playerCards =  document.querySelector('#player-cards');
 
  const createDeck = () => {
 
@@ -66,10 +67,19 @@
 //Events
 btnAskForCard.addEventListener('click', () => {
     const card = askForCard();
-
     playerPoints += cardValue(card);
     scorePoints[0].innerText = playerPoints;
 
-    
+    const imgCard = document.createElement('img');
+    imgCard.src = `assets/cartas/${card}.png`;
+    imgCard.classList.add('BJ-card');
+    playerCards.append(imgCard);
+
+     if(playerPoints > 21) {
+        btnAskForCard.disabled = true;
+        alert('Perdiste');
+     } else if ( playerPoints === 21) {
+        alert('Ganaste');
+     }
 
 });
