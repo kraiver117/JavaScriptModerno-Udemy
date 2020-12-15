@@ -5,9 +5,17 @@
     2S = Two of spades (Espadas)
  */
 
+ //General variables
  let deck = [];
  const types = ['C', 'D', 'H', 'S'];
  const specials = ['A', 'J', 'Q', 'K'];
+
+ let playerPoints = 0;
+ let aiPoints = 0;
+
+ //References of DOM
+ const btnAskForCard = document.querySelector('#btnAskForCard');
+ const scorePoints = document.querySelectorAll('small');
 
  const createDeck = () => {
 
@@ -41,8 +49,8 @@
     }
 
     const card = deck.pop();
-    console.log(deck);
-    console.log(card); ///The card must be in the deck
+    // console.log(deck);
+    // console.log(card); ///The card must be in the deck
     return card;
  }
 
@@ -55,6 +63,13 @@
         : value * 1;
  }
 
+//Events
+btnAskForCard.addEventListener('click', () => {
+    const card = askForCard();
 
- const cardVal = cardValue(askForCard());
- console.log({cardVal})
+    playerPoints += cardValue(card);
+    scorePoints[0].innerText = playerPoints;
+
+    
+
+});
