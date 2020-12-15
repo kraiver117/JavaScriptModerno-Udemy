@@ -11,12 +11,15 @@
  const specials = ['A', 'J', 'Q', 'K'];
 
  let playerPoints = 0;
- let aiPoints = 0;
+ let AIPoints = 0;
 
  //References of DOM
  const btnAskForCard = document.querySelector('#btnAskForCard');
+ const btnStop = document.querySelector('#btnStop');
  const scorePoints = document.querySelectorAll('small');
  const playerCards =  document.querySelector('#player-cards');
+ const AICards =  document.querySelector('#AI-cards');
+
 
  const createDeck = () => {
 
@@ -64,6 +67,28 @@
         : value * 1;
  }
 
+ //Computer turn
+ const computerTurn = (minimumPoints) => {
+
+    do {
+        const card = askForCard();
+        
+        AIPoints += cardValue(card);
+        scorePoints[1].innerText = AIPoints;
+
+        const imgCard = document.createElement('img');
+        imgCard.src = `assets/cartas/${card}.png`;
+        imgCard.classList.add('BJ-card');
+        AICards.append(imgCard);
+
+        if(minimumPoints > 21) {
+            break;
+        }
+
+    } while ( (AIPoints < minimumPoints) && (minimumPoints <= 21) );
+
+ }
+
 //Events
 btnAskForCard.addEventListener('click', () => {
     const card = askForCard();
@@ -76,10 +101,23 @@ btnAskForCard.addEventListener('click', () => {
     playerCards.append(imgCard);
 
      if(playerPoints > 21) {
-        btnAskForCard.disabled = true;
         alert('Perdiste');
+        btnStop.disabled = true;
+        btnAskForCard.disabled = true;
+        computerTurn(playerPoints);
+
      } else if ( playerPoints === 21) {
         alert('Ganaste');
+        btnStop.disabled = true;
+        btnAskForCard.disabled = true;
+        computerTurn( playerPoints );
      }
 
+});
+
+
+btnStop.addEventListener('click', () => {
+    btnStop.disabled = true;
+    btnAskForCard.disabled = true;
+    computerTurn( playerPoints );
 });
