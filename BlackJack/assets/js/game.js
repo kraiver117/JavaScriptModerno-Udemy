@@ -3,24 +3,35 @@
     'use strict'
     //General variables
     let deck = [];
-    const types = ['C', 'D', 'H', 'S'];
-    const specials = ['A', 'J', 'Q', 'K'];
+    const types = ['C', 'D', 'H', 'S'], specials = ['A', 'J', 'Q', 'K'];
 
-    let playerPoints = 0;
-    let AIPoints = 0;
+    // let playerPoints = 0, AIPoints = 0;
+    let playerPoints = [];
 
     //References of DOM
-    const btnAskForCard = document.querySelector('#btnAskForCard');
-    const btnStop = document.querySelector('#btnStop');
-    const btnNewGame = document.querySelector('#btnNewGame');
+    const btnAskForCard = document.querySelector('#btnAskForCard'),
+        btnStop = document.querySelector('#btnStop'),
+        btnNewGame = document.querySelector('#btnNewGame');
 
-    const scorePoints = document.querySelectorAll('small');
-    const playerCards = document.querySelector('#player-cards');
-    const AICards = document.querySelector('#AI-cards');
+    const scorePoints = document.querySelectorAll('small'),
+        playerCards = document.querySelector('#player-cards'),
+        AICards = document.querySelector('#AI-cards');
 
+    //Initialize new game
+    const newGame = (players = 2) => {
+        deck = createDeck();
+        
+        for (let i = 0; i < players; i++) {
+            playerPoints.push(0);
+        }
 
+        console.log(playerPoints);
+    }
+
+    //Create deck
     const createDeck = () => {
 
+        deck = [];
         //All cards with numbers
         for (let i = 2; i <= 10; i++) {
             for (const type of types) {
@@ -35,33 +46,30 @@
             }
         }
 
-        // console.log(deck);
-        deck = _.shuffle(deck);
-        return deck;
+        return _.shuffle(deck);
     }
 
-    createDeck();
+
 
     const askForCard = () => {
         if (deck.length === 0) {
             throw 'No card in deck';
-        } else {
+        } 
 
-        }
-
-        const card = deck.pop();
-        // console.log(deck);
-        // console.log(card); ///The card must be in the deck
-        return card;
+        return deck.pop();
     }
-
-    //  askForCard();
 
     const cardValue = (card) => {
         const value = card.substring(0, card.length - 1);
         return (isNaN(value)) ?
             (value === 'A') ? 11 : 10
             : value * 1;
+    }
+
+    const pointsAccumulator = () => {
+
+
+
     }
 
     //Computer turn
@@ -134,8 +142,9 @@
     btnNewGame.addEventListener('click', () => {
 
         console.clear();
-        deck = [];
-        deck = createDeck();
+        newGame();
+        // deck = [];
+        // deck = createDeck();
 
         playerPoints = 0;
         AIPoints = 0;
