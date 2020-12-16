@@ -14,18 +14,16 @@
         btnNewGame = document.querySelector('#btnNewGame');
 
     const scorePoints = document.querySelectorAll('small'),
-        playerCards = document.querySelector('#player-cards'),
-        AICards = document.querySelector('#AI-cards');
+        playersCardsDiv = document.querySelectorAll('.cardsDiv');
 
     //Initialize new game
     const newGame = (players = 2) => {
         deck = createDeck();
-        
+
         for (let i = 0; i < players; i++) {
             playerPoints.push(0);
         }
 
-        console.log(playerPoints);
     }
 
     //Create deck
@@ -54,7 +52,7 @@
     const askForCard = () => {
         if (deck.length === 0) {
             throw 'No card in deck';
-        } 
+        }
 
         return deck.pop();
     }
@@ -66,25 +64,36 @@
             : value * 1;
     }
 
-    const pointsAccumulator = () => {
+    //Turno: 0 = first player and the last one is the AI
+    const pointsAccumulator = (card, turn) => {
 
+        playerPoints[turn] += cardValue(card);
+        scorePoints[turn].innerText = playerPoints[turn];
 
+        return playerPoints[turn];
+    }
 
+    const createCard = (card, turn) => {
+        const imgCard = document.createElement('img');
+        imgCard.src = `assets/cartas/${card}.png`;
+        imgCard.classList.add('BJ-card');
+        playersCardsDiv[turn].append(imgCard);
     }
 
     //Computer turn
     const computerTurn = (minimumPoints) => {
+        
+        let AIPoints = 0;
 
         do {
             const card = askForCard();
+            AIPoints = pointsAccumulator(card, playerPoints.length - 1);
 
-            AIPoints += cardValue(card);
-            scorePoints[1].innerText = AIPoints;
-
-            const imgCard = document.createElement('img');
-            imgCard.src = `assets/cartas/${card}.png`;
-            imgCard.classList.add('BJ-card');
-            AICards.append(imgCard);
+            createCard(card, playerPoints.length - 1);
+            // const imgCard = document.createElement('img');
+            // imgCard.src = `assets/cartas/${card}.png`;
+            // imgCard.classList.add('BJ-card');
+            // AICards.append(imgCard);
 
             if (minimumPoints > 21) {
                 break;
@@ -108,25 +117,21 @@
     //Events
     btnAskForCard.addEventListener('click', () => {
         const card = askForCard();
-        playerPoints += cardValue(card);
-        scorePoints[0].innerText = playerPoints;
+        const playerPointsA = pointsAccumulator(card, 0);
 
-        const imgCard = document.createElement('img');
-        imgCard.src = `assets/cartas/${card}.png`;
-        imgCard.classList.add('BJ-card');
-        playerCards.append(imgCard);
+        createCard(card, 0);
 
-        if (playerPoints > 21) {
+        if (playerPointsA > 21) {
             // alert('Perdiste');
             btnStop.disabled = true;
             btnAskForCard.disabled = true;
-            computerTurn(playerPoints);
+            computerTurn(playerPointsA);
 
-        } else if (playerPoints === 21) {
+        } else if (playerPointsA === 21) {
             // alert('Ganaste');
             btnStop.disabled = true;
             btnAskForCard.disabled = true;
-            computerTurn(playerPoints);
+            computerTurn(playerPointsA);
         }
 
     });
@@ -146,16 +151,16 @@
         // deck = [];
         // deck = createDeck();
 
-        playerPoints = 0;
-        AIPoints = 0;
-        scorePoints[0].innerText = 0;
-        scorePoints[1].innerText = 0;
+        // playerPoints = 0;
+        // AIPoints = 0;
+        // scorePoints[0].innerText = 0;
+        // scorePoints[1].innerText = 0;
 
-        playerCards.innerHTML = '';
-        AICards.innerHTML = '';
+        // playerCards.innerHTML = '';
+        // AICards.innerHTML = '';
 
-        btnStop.disabled = false;
-        btnAskForCard.disabled = false;
+        // btnStop.disabled = false;
+        // btnAskForCard.disabled = false;
 
     });
 })();
