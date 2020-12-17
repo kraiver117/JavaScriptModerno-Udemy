@@ -12,28 +12,35 @@
         BlackJack
     </header>
 
-    <div class="row mt-2">
+    <div class="row container-fluid mt-2">
         <div id="buttons" class="col text-center">
             <button id='btnNewGame' class="btn btn-danger">Nuevo juego</button>
-            <button id='btnAskForCard' class="btn btn-primary">Pedir carta</button>
-            <button id='btnStop' class="btn btn-primary">Detener</button>
+            <button id='btnAskForCard' disabled class="btn btn-primary">Pedir carta</button>
+            <button id='btnStop' disabled class="btn btn-primary">Detener</button>
         </div>
     </div>
-    <div class="row container">
-        <div class="col">
-            <h1>Jugador 1 - <small>0</small></h1>
-            <div id="player-cards">
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <h1>Jugador 1 - <small>0</small></h1>
+                <div id="player-cards" class="cardsDiv">
+                </div>
             </div>
         </div>
-    </div>
-    <div class="row container">
-        <div class="col">
-            <h1>Computadora - <small>0</small></h1>
-            <div id="AI-cards">
+        <div class="row">
+            <div class="col">
+                <h1>Computadora - <small>0</small></h1>
+                <div id="AI-cards" class="cardsDiv">
+                </div>
             </div>
         </div>
     </div>
     <script src="./assets/js/underscore-min.js"></script>
     <script src="./assets/js/game.js"></script>
+    <script>
+        document.querySelector('#btnNewGame').addEventListener('click', () => {
+            myModule.newGame();
+        });
+    </script>
 </body>
 </html>
