@@ -10,8 +10,7 @@ const myModule = (() => {
 
     //References of DOM
     const btnAskForCard = document.querySelector('#btnAskForCard'),
-        btnStop = document.querySelector('#btnStop'),
-        btnNewGame = document.querySelector('#btnNewGame');
+        btnStop = document.querySelector('#btnStop');
 
     const scorePoints = document.querySelectorAll('small'),
         playersCardsDiv = document.querySelectorAll('.cardsDiv');
