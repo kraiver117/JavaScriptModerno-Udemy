@@ -1,5 +1,5 @@
 //Patron modulo, no se pueden llamar en objeto global windows
-(() => {
+const myModule = (() => {
     'use strict'
     //General variables
     let deck = [];
@@ -19,16 +19,21 @@
     //Initialize new game
     const newGame = (players = 2) => {
         deck = createDeck();
+        playerPoints = [];
 
         for (let i = 0; i < players; i++) {
             playerPoints.push(0);
         }
 
+        scorePoints.forEach( elem => elem.innerText = 0);
+        playersCardsDiv.forEach( elem => elem.innerHTML = '')
+
+        btnStop.disabled = false;
+        btnAskForCard.disabled = false;
     }
 
     //Create deck
     const createDeck = () => {
-
         deck = [];
         //All cards with numbers
         for (let i = 2; i <= 10; i++) {
@@ -80,26 +85,8 @@
         playersCardsDiv[turn].append(imgCard);
     }
 
-    //Computer turn
-    const computerTurn = (minimumPoints) => {
-        
-        let AIPoints = 0;
-
-        do {
-            const card = askForCard();
-            AIPoints = pointsAccumulator(card, playerPoints.length - 1);
-
-            createCard(card, playerPoints.length - 1);
-            // const imgCard = document.createElement('img');
-            // imgCard.src = `assets/cartas/${card}.png`;
-            // imgCard.classList.add('BJ-card');
-            // AICards.append(imgCard);
-
-            if (minimumPoints > 21) {
-                break;
-            }
-
-        } while ((AIPoints < minimumPoints) && (minimumPoints <= 21));
+    const winner = () => {
+        const [minimumPoints, AIPoints] = playerPoints;
 
         setTimeout(() => {
             if (AIPoints === minimumPoints) {
@@ -112,6 +99,23 @@
                 alert('AI Wins');
             }
         }, 100);
+    }
+
+    //Computer turn
+    const computerTurn = (minimumPoints) => {
+        
+        let AIPoints = 0;
+
+        do {
+            const card = askForCard();
+            AIPoints = pointsAccumulator(card, playerPoints.length - 1);
+
+            createCard(card, playerPoints.length - 1);
+
+        } while ((AIPoints < minimumPoints) && (minimumPoints <= 21));
+
+        winner();
+
     }
 
     //Events
@@ -140,27 +144,10 @@
     btnStop.addEventListener('click', () => {
         btnStop.disabled = true;
         btnAskForCard.disabled = true;
-        computerTurn(playerPoints);
+        computerTurn(playerPoints[0]);
     });
 
-
-    btnNewGame.addEventListener('click', () => {
-
-        console.clear();
-        newGame();
-        // deck = [];
-        // deck = createDeck();
-
-        // playerPoints = 0;
-        // AIPoints = 0;
-        // scorePoints[0].innerText = 0;
-        // scorePoints[1].innerText = 0;
-
-        // playerCards.innerHTML = '';
-        // AICards.innerHTML = '';
-
-        // btnStop.disabled = false;
-        // btnAskForCard.disabled = false;
-
-    });
+    return {
+        newGame
+    }
 })();
